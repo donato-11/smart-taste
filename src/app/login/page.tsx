@@ -24,13 +24,14 @@ export default function Login() {
             await login({ email, password })
             // After login, redirect to dashboard (assumes a token/cookie set by backend)
             router.push('/dashboard')
-        } catch (err: any) {
-            setError(err.message || 'Error en el login')
+        } catch (err: unknown) {
+            if (err instanceof Error) setError(err.message)
+            else setError('Error desconocido')
         } finally {
             setLoading(false)
         }
     }
-    
+
     return (
         <div className="min-h-screen bg-gray-50">
             <Header />

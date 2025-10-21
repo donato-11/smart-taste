@@ -8,12 +8,18 @@ import { IngredientInput } from '@/components/IngredientInput'
 import { RecipeCard } from '@/components/RecipeCard'
 import { generateRecipes } from '../services/api'
 
+interface Recipe {
+  title: string
+  summary: string
+  description: string
+  ingredients: []
+}
 
 export default function Home() {
   const router = useRouter()
   const [ingredients, setIngredients] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
-  const [recipes, setRecipes] = useState<any[]>([])
+  const [recipes, setRecipes] = useState<Recipe[]>([])
   const [error, setError] = useState<string | null>(null)
 
 
@@ -28,8 +34,9 @@ export default function Home() {
     try {
       const res = await generateRecipes(ingredients)
       setRecipes(res)
-    } catch (e: any) {
-      setError(e.message || 'Error al generar recetas')
+    } catch (e: unknown) {
+      if (e instanceof Error) setError(e.message)
+      else setError('Error desconocido')
     } finally {
       setLoading(false)
     }

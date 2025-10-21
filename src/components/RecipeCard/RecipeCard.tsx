@@ -1,4 +1,11 @@
-export function RecipeCard({ recipe }: { recipe: any }){
+interface Recipe {
+  title: string
+  summary: string
+  description: string
+  ingredients: []
+}
+
+export function RecipeCard({ recipe }: { recipe: Recipe }){
     return (
     <article className="bg-white rounded shadow p-4">
         <h3 className="font-semibold text-lg">{recipe.title || 'Receta sin título'}</h3>
