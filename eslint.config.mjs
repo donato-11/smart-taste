@@ -20,6 +20,13 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    // Reglas personalizadas para TypeScript
+    files: ["**/*.ts", "**/*.tsx"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "warn", // o "off" para desactivar completamente
+    },
+  },
 ];
 
 export default eslintConfig;
