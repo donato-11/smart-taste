@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { login } from '@/services/api'
 
 export default function Login() {
     const router = useRouter()
@@ -12,21 +11,6 @@ export default function Login() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault()
-        setLoading(true)
-        setError(null)
-    
-        try {
-            await login({ email, password })
-            router.push('/dashboard')
-        } catch (err: unknown) {
-            if (err instanceof Error) setError(err.message)
-            else setError('Error al iniciar sesión. Por favor, verifica tus credenciales.')
-        } finally {
-            setLoading(false)
-        }
-    }
 
     return (
         <div className="min-h-screen bg-linear-to-br from-amber-50 via-orange-50 to-rose-50 flex items-center justify-center p-4">
@@ -47,7 +31,7 @@ export default function Login() {
 
                 {/* Formulario */}
                 <div className="bg-white rounded-2xl shadow-xl p-8 border border-orange-100">
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form  className="space-y-6">
                         {/* Email */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-2">
