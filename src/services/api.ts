@@ -5,13 +5,6 @@ const SPOONACULAR_API_KEY = '878b5822497f4e598a49261f72eef146';
 const SPOONACULAR_BASE_URL = 'https://api.spoonacular.com';
 
 // Interfaces para TypeScript
-interface SupabaseAuthResponse {
-  data: {
-    user: any;
-    session: any;
-  } | null;
-  error: Error | null;
-}
 
 interface User {
   id: string;
@@ -24,38 +17,6 @@ interface Session {
   access_token: string;
   refresh_token: string;
 }
-
-// Cliente de Supabase (mock)
-const supabaseClient = {
-  auth: {
-    signInWithPassword: async ({ email, password }: { email: string; password: string }): Promise<SupabaseAuthResponse> => {
-      return new Promise((resolve, reject) => {
-        // Simulación de autenticación - en una app real validarías contra la base de datos
-        if (email && password.length >= 6) {
-          resolve({
-            data: {
-              user: {
-                id: '1',
-                email: email,
-                created_at: new Date().toISOString()
-              } as User,
-              session: {
-                access_token: 'mock-jwt-token',
-                refresh_token: 'mock-refresh-token'
-              } as Session
-            },
-            error: null
-          });
-        } else {
-          resolve({
-            data: null,
-            error: new Error('Invalid credentials')
-          });
-        }
-      });
-    }
-  }
-};
 
 export async function generateRecipes(ingredients: string[]) {
   try {
@@ -126,36 +87,7 @@ export async function getInformation(id: string) {
   }
 }
 
-export async function login({ email, password }: { email: string; password: string }) {
-  try {
-    // Mock de autenticación con Supabase - ahora tipado correctamente
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
 
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    if (!data) {
-      throw new Error('No data received from authentication');
-    }
-
-    // En una implementación real, guardarías el token en cookies o localStorage
-    console.log('Login successful - Supabase user:', data.user);
-    
-    return {
-      user: data.user,
-      session: data.session,
-      success: true
-    };
-
-  } catch (error) {
-    console.error('Login error:', error);
-    throw new Error('Authentication failed');
-  }
-}
 
 // Función de registro mock con Supabase
 export async function register({ email, password, name }: { email: string; password: string; name: string }) {
